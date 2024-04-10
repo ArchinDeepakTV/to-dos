@@ -1,0 +1,58 @@
+https://www.sammeechward.com/deploying-full-stack-js-to-aws-ec2
+
+sudo -i -u postgres
+
+// connection and setup of db on system
+CREATE DATABASE todos;
+CREATE ROLE admins WITH LOGIN PASSWORD 'HLLhcs987';
+GRANT ALL PRIVILEGES ON DATABASE "todos" TO admins;
+GRANT ALL PRIVILEGES ON TABLE "todo" TO admins;
+GRANT ALL PRIVILEGES ON SEQUENCE "expenditure_id_seq" TO admins;
+GRANT ALL PRIVILEGES ON SEQUENCE "authentication_userid_seq" TO admins;
+GRANT ALL PRIVILEGES ON TABLE "authentication" TO admins;
+GRANT SELECT ON todo TO admins;
+GRANT INSERT ON todo TO admins;
+GRANT DELETE ON todo TO admins;
+GRANT UPDATE ON todo TO admins;
+
+GRANT SELECT ON authentication TO admins;
+GRANT INSERT ON authentication TO admins;
+GRANT DELETE ON authentication TO admins;
+GRANT UPDATE ON authentication TO admins;
+
+db:todos
+table:todo, totals
+
+CREATE TABLE authentication (
+    userid SERIAL UNIQUE,
+    name VARCHAR(30) NOT NULL UNIQUE,
+    mailid VARCHAR(40) NOT NULL UNIQUE,
+    password VARCHAR(20) NOT NULL,
+    join_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE todo (
+    userid SERIAL UNIQUE, 
+    title VARCHAR(50) NOT NULL,
+    details VARCHAR(200) NOT NULL,
+    tags VARCHAR(20),
+    date INT,
+    month INT,
+    year INT,
+    reminder_time TIMESTAMP,
+    status INT
+);
+
+UPDATE authentication SET total = 0;
+
+DROP TABLE IF EXISTS todo;
+DROP TABLE IF EXISTS authentication;
+
+INSERT INTO todo(reason,amount) VALUES ('duke 390', 50000);
+INSERT INTO authentication(total) VALUES (5);
+
+UPDATE authentication SET total = 50;
+
+DELETE FROM todo WHERE reason='duke 390';
+
+psql postgres://admins:HLLhcs987@127.0.0.1/expenses
